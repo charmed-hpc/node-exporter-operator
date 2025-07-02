@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-uv := require("uv")
+uv := `which uv`
 
 project_dir := justfile_directory()
 src_dir := project_dir / "src"

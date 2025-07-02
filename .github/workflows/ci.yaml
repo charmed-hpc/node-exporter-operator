@@ -76,7 +76,7 @@ jobs:
       - name: Install Charmcraft
         run: sudo snap install charmcraft --classic --channel latest/stable
       - name: Run tests
-        run: just repo typecheck
+        run: just typecheck
   unit:
     name: Unit Test
     runs-on: ubuntu-24.04
