@@ -1,0 +1,11 @@
+version
+.venv
+venv
+.ruff_cache/
+*charm
+build
+.tox
+.build
+__pycache__/
+*.py[cod]
+.coverage

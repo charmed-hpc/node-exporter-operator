@@ -1,0 +1,49 @@
+name: node-exporter
+description: >
+    Export machine metrics to Prometheus.
+    Upstream project: https://github.com/prometheus/node_exporter
+
+summary: >
+    This operator provides the `node_exporter` as a subordinate charm.
+
+links:
+  contact: https://matrix.to/#/#hpc:ubuntu.com
+
+  issues:
+    - https://github.com/charmed-hpc/node-exporter-operator/issues
+
+  source:
+    - https://github.com/charmed-hpc/node-exporter-operator
+
+subordinate: true
+
+assumes:
+  - juju
+
+type: charm
+platforms:
+  ubuntu@24.04:amd64:
+
+parts:
+  charm:
+    source: .
+    plugin: uv
+    build-snaps:
+      - astral-uv
+
+requires:
+  juju-info:
+    interface: juju-info
+    scope: container
+
+provides:
+  metrics-endpoint:
+    interface: prometheus_scrape
+
+config:
+  options:
+    node-exporter-version:
+      type: string
+      default: "1.9.1"
+      description: >
+        The node-exporter version to install.
