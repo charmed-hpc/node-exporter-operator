@@ -201,5 +201,11 @@ def _render_sysconfig() -> None:
 
 def version() -> str:
     """Return the node_exporter version."""
-    vers = subprocess.check_output(["node_exporter", "--version"], text=True)
+    vers = ""
+    try:
+        vers = subprocess.check_output(["node_exporter", "--version"], text=True)
+    except subprocess.CalledProcessError:
+        msg = "Error getting node_expoter version."
+        logger.error(msg)
+        raise NodeExporterOpsError(msg)
     return vers.split()[2]

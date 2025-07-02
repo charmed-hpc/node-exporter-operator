@@ -43,13 +43,19 @@ class NodeExporterCharm(ops.CharmBase):
         """Install node_exporter."""
         self.unit.status = ops.MaintenanceStatus("Installing node-exporter...")
 
-        neo.install(self.model.config.get("node-exporter-version"))
-
-        self.unit.set_workload_version(neo.version())
-
-        self.unit.open_port("tcp", NODE_EXPORTER_PORT)
-
-        self.unit.status = ops.ActiveStatus("node-exporter installed")
+        node_exporter_version = self.model.config.get("node-exporter-version")
+        if (
+            isinstance(node_exporter_version, str)
+            and (node_exporter_version is not None)
+            and (node_exporter_version != "")
+        ):
+            neo.install(node_exporter_version)
+            self.unit.set_workload_version(neo.version())
+            self.unit.open_port("tcp", NODE_EXPORTER_PORT)
+            self.unit.status = ops.ActiveStatus("node-exporter installed")
+        else:
+            self.unit.status = ops.BlockedStatus("Need node-exporter-version config to continue.")
+            event.defer()
 
     def _on_start(self, event: ops.StartEvent) -> None:
         """Start node_exporter."""
